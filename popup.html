@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>OmniStudio Finder</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header class="bar">
+      <div class="org">
+        <span class="dot" id="statusDot"></span>
+        <span class="org-host" id="orgHost">Reading tab…</span>
+      </div>
+      <div class="bar-actions">
+        <button id="refresh" class="icon-btn" title="Reload from the org">Reload</button>
+        <button id="help" class="icon-btn" title="How to use this" aria-expanded="false" aria-controls="helpPanel">?</button>
+        <button id="settings" class="icon-btn" title="Settings">Settings</button>
+      </div>
+    </header>
+
+    <div class="search">
+      <input
+        id="q"
+        type="text"
+        role="combobox"
+        aria-label="Search assets"
+        aria-autocomplete="list"
+        aria-controls="options"
+        aria-expanded="false"
+        placeholder="Search name, type, subtype or Type_SubType_Language…"
+        autocomplete="off"
+        spellcheck="false"
+      />
+    </div>
+
+    <nav class="filters">
+      <div class="segments" id="segments">
+        <button type="button" aria-pressed="true" data-filter="all" class="seg on">All</button>
+        <button type="button" aria-pressed="false" data-filter="os" class="seg">OmniScripts</button>
+        <button type="button" aria-pressed="false" data-filter="ip" class="seg">Integration Procedures</button>
+        <button type="button" aria-pressed="false" data-filter="dr" class="seg">DataRaptors</button>
+        <button type="button" aria-pressed="false" data-filter="fc" class="seg">FlexCards</button>
+      </div>
+      <div class="filters-tail">
+        <label class="check">
+          <input type="checkbox" id="activeOnly" />
+          <span>Active only</span>
+        </label>
+        <span class="count" id="count"></span>
+      </div>
+    </nav>
+
+    <div id="notice" class="notice hidden"></div>
+
+    <main>
+    <section id="helpPanel" class="help hidden">
+      <h3>Finding things</h3>
+      <p>
+        Type to filter on name, type, subtype, language or author. Every word has to match, in any
+        order, so <em>case create</em> finds "Create Case". OmniScripts and Integration Procedures
+        also match their key, <em>Type_SubType_Language</em> (or <em>Type_SubType</em>), as it
+        appears in logs and element names, so you can paste one straight in; hover a row's type
+        line to see it. The buttons above narrow by asset type, and <em>Active only</em> hides
+        anything with no active version.
+      </p>
+
+      <h3>Opening things</h3>
+      <p>
+        <strong>Open v3</strong> opens the active version — that's the one you want nearly always.
+        Click a <strong>version chip</strong> instead to open that specific version. Shift-click
+        either one to open the plain Salesforce record page rather than the designer. Clicking the
+        row itself only selects it, so a stray click can't launch a designer.
+      </p>
+      <p class="keys">
+        <kbd>↑</kbd><kbd>↓</kbd> move ·
+        <kbd>Enter</kbd> opens the active version ·
+        <kbd>Esc</kbd> clears the search
+      </p>
+
+      <h3>Opening this popup with the keyboard</h3>
+      <p>
+        Current shortcut: <span id="shortcutKeys" class="shortcut">…</span>.
+        Chrome quietly drops a suggested shortcut when it clashes with something else, which
+        happens often on macOS because Option plus a letter types a special character. Pick your
+        own — anything with Command or Control works.
+      </p>
+      <p><button id="shortcutSetup" class="link-btn" type="button">Set keyboard shortcut</button></p>
+
+      <h3>Reading the version rail</h3>
+      <dl class="legend">
+        <dt><span class="chip live">v3</span></dt>
+        <dd>The active version.</dd>
+        <dt><span class="rail-gap">…</span></dt>
+        <dd>Versions hidden between the newest few and the active one.</dd>
+        <dt><span class="chip more">+9 older</span></dt>
+        <dd>Expands the full history. Click again to collapse.</dd>
+        <dt><span class="chip">Open</span></dt>
+        <dd>An asset with no version numbering, such as a managed-package DataRaptor.</dd>
+      </dl>
+      <p>Hover any chip for its last-modified date.</p>
+
+      <h3>Badges</h3>
+      <p class="keys">
+        <span class="badge os">OS</span> OmniScript ·
+        <span class="badge ip">IP</span> Integration Procedure ·
+        <span class="badge dr">DR</span> DataRaptor ·
+        <span class="badge fc">FC</span> FlexCard
+      </p>
+
+      <h3>Navigation bar</h3>
+      <p>
+        Settings can pin a Lightning app, so pages open with that app's navigation bar rather than
+        whichever app you were last in. How far it reaches depends on where the designer lives:
+        anything under <code>/lightning/</code> can carry it, nothing else can.
+      </p>
+      <p>
+        On <strong>core OmniStudio</strong> that means record pages only. All four builders sit at
+        <code>/builder_omnistudio/…</code>, outside the Lightning shell, and Salesforce draws no
+        navigation bar around them — the same as Flow Builder.
+      </p>
+      <p>
+        On the <strong>managed packages</strong>, FlexCards and the OmniScript designer carry the
+        app in the URL. The Integration Procedure and DataRaptor designers are Visualforce pages
+        that can't, so those switch to the app first and then follow through — you'll see one extra
+        page load on the way.
+      </p>
+
+      <h3>Which org, which designer</h3>
+      <p>
+        The org comes from your current tab, so switching orgs is just switching tabs. The designer
+        is detected separately, because an org can store records in the standard objects while
+        running the managed package designers. The line under the search box names the one in use;
+        <strong>Settings</strong> lets you force either.
+      </p>
+
+      <h3>When something goes wrong</h3>
+      <p>
+        <strong>No session found</strong> — log in to the org in this browser, then reopen.<br />
+        <strong>Session rejected</strong> — refresh the Salesforce tab. If it persists, your profile
+        may not have API Enabled.<br />
+        <strong>Wrong designer opens</strong> — switch it in Settings.<br />
+        <strong>Results look stale</strong> — press Reload. The list is read fresh each time you
+        open the popup, so this only matters if something changed while it was already open.
+      </p>
+    </section>
+
+    <div id="results" class="results" tabindex="-1"></div>
+    <!-- The listbox the search box controls; script fills in role and aria-owns. -->
+    <div id="options"></div>
+    </main>
+
+    <footer class="foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> move</span>
+      <span><kbd>Enter</kbd> open active</span>
+      <span>chips open a specific version</span>
+    </footer>
+
+    <script type="module" src="src/ui/popup-entry.js"></script>
+  </body>
+</html>

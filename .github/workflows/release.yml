@@ -1,0 +1,108 @@
+name: Release
+
+# Push a tag like v1.2.0 (npm run bump prints the commands). The workflow
+# checks the tag against the manifest, builds the extension zip (shipped files
+# and LICENSE), renders the store screenshots and marketing images, and attaches them — plus the
+# store listing text and checksums — to a GitHub Release. If the Web Store
+# secrets exist it also uploads the zip as a new store draft. Publishing for
+# review stays a manual step unless you run this workflow by hand with
+# "publish" ticked. Running it by hand on a tag rebuilds that tag's assets.
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Submit the uploaded version for Chrome Web Store review
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+
+      - name: Read version
+        id: version
+        run: echo "value=$(node -p "require('./manifest.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Tag must match manifest version
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          if [ "${GITHUB_REF_NAME}" != "v${{ steps.version.outputs.value }}" ]; then
+            echo "Tag ${GITHUB_REF_NAME} does not match manifest version ${{ steps.version.outputs.value }}"
+            exit 1
+          fi
+
+      - run: npm run package
+
+      # The screenshot script drives the real popup in Chromium. Playwright is
+      # a tool here, not a dependency of the extension, so it is installed
+      # globally for this job only.
+      - name: Install Playwright and Chromium
+        run: |
+          npm install --global playwright@1.63.0
+          echo "NODE_PATH=$(npm root --global)" >> "$GITHUB_ENV"
+          npx --yes playwright@1.63.0 install --with-deps chromium
+
+      - run: npm run screenshots
+      - run: npm run marketing
+
+      - name: Store assets
+        env:
+          VERSION: ${{ steps.version.outputs.value }}
+        run: |
+          (cd store/screenshots && zip -X -q "../../dist/omnistudio-finder-${VERSION}-screenshots.zip" *.png)
+          (cd store/marketing && zip -X -q "../../dist/omnistudio-finder-${VERSION}-marketing.zip" *.png)
+          cp store/description.txt "dist/omnistudio-finder-${VERSION}-store-description.txt"
+          (cd dist && sha256sum *.zip *.txt > "omnistudio-finder-${VERSION}-SHA256SUMS.txt")
+          unzip -l "dist/omnistudio-finder-${VERSION}.zip"
+          cat "dist/omnistudio-finder-${VERSION}-SHA256SUMS.txt"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: omnistudio-finder-${{ steps.version.outputs.value }}
+          path: |
+            dist/*.zip
+            dist/*.txt
+            store/screenshots/*.png
+            store/marketing/*.png
+
+      - name: GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/*.zip
+            dist/*.txt
+            store/screenshots/*.png
+            store/marketing/*.png
+          generate_release_notes: true
+
+      - name: Upload to Chrome Web Store
+        env:
+          EXTENSION_ID: ${{ secrets.CWS_EXTENSION_ID }}
+          CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
+        run: |
+          if [ -z "$EXTENSION_ID" ] || [ -z "$REFRESH_TOKEN" ]; then
+            echo "Chrome Web Store secrets not set; skipping upload."
+            exit 0
+          fi
+          ARGS=""
+          if [ "${{ inputs.publish }}" = "true" ]; then ARGS="--auto-publish"; fi
+          npx --yes chrome-webstore-upload-cli@3 upload \
+            --source dist/omnistudio-finder-${{ steps.version.outputs.value }}.zip $ARGS

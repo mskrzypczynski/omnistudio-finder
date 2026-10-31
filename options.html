@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>OmniStudio Finder settings</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <h1>OmniStudio Finder settings</h1>
+
+      <section class="card">
+        <h2>Designer</h2>
+        <p class="lede">
+          Where records live and which designer an org opens are two different things &mdash; an
+          org can keep data in the standard objects while an admin has switched on the Managed
+          Package Designer. OmniStudio Finder detects them separately. Change this if it picks wrong.
+        </p>
+
+        <div class="field">
+          <label for="designerPref">Which designer to open</label>
+          <div class="input-row">
+            <select id="designerPref">
+              <option value="auto">Auto &mdash; managed designers when the package is installed</option>
+              <option value="native">Core OmniStudio builders</option>
+              <option value="managed">Managed package designers</option>
+            </select>
+            <input id="nsOverride" type="text" spellcheck="false" placeholder="Namespace, e.g. vlocity_ins" />
+          </div>
+          <p class="hint" id="detected"></p>
+        </div>
+
+        <div class="field">
+          <label for="appContext">Navigation bar on record pages</label>
+          <div class="input-row">
+            <input
+              id="appContext"
+              type="text"
+              list="appList"
+              spellcheck="false"
+              placeholder="Whichever app you were last in"
+            />
+            <datalist id="appList"></datalist>
+          </div>
+          <p class="hint" id="appHint"></p>
+        </div>
+
+        <div class="field">
+          <label for="openIn">Where to open it</label>
+          <div class="input-row">
+            <select id="openIn">
+              <option value="newTab">A new browser tab</option>
+              <option value="sameTab">The Salesforce tab you came from</option>
+            </select>
+          </div>
+          <p class="hint">
+            Hold <kbd>Ctrl</kbd> (<kbd>&#8984;</kbd> on macOS) while clicking to do the opposite
+            just once. Hold <kbd>Shift</kbd> to open the plain record page instead of the designer.
+          </p>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Designer links</h2>
+        <p class="lede">
+          These are built in and correct for current orgs, so you shouldn't need to touch them.
+          Override one only if Salesforce changes a builder URL in a later release. Leave a box
+          empty to use the built-in link shown in grey.
+        </p>
+
+        <div class="field">
+          <label for="osTemplate">OmniScript</label>
+          <input id="osTemplate" type="text" spellcheck="false" />
+        </div>
+
+        <div class="field">
+          <label for="ipTemplate">Integration Procedure</label>
+          <input id="ipTemplate" type="text" spellcheck="false" />
+        </div>
+
+        <div class="field">
+          <label for="drTemplate">DataRaptor</label>
+          <input id="drTemplate" type="text" spellcheck="false" />
+        </div>
+
+        <div class="field">
+          <label for="fcTemplate">FlexCard</label>
+          <input id="fcTemplate" type="text" spellcheck="false" />
+        </div>
+
+        <p class="hint">
+          Placeholders: <code>{id}</code> <code>{name}</code> <code>{type}</code>
+          <code>{subtype}</code> <code>{language}</code> <code>{version}</code>
+          <code>{sobject}</code>, plus <code>{ns}</code> for the package namespace,
+          <code>{vfhost}</code> for the Visualforce host, and <code>{now}</code> for a
+          cache-busting timestamp. A value starting with <code>/</code> is resolved against
+          whichever org you're browsing.
+        </p>
+
+        <div class="actions">
+          <button id="save" class="primary" type="button">Save</button>
+          <button id="clearTemplates" type="button">Restore built-in links</button>
+          <span id="saved" class="saved"></span>
+        </div>
+      </section>
+
+      <p class="support">
+        Free, and staying that way. If it saved you an afternoon, you can
+        <a href="https://buycoffee.to/mskrz" target="_blank" rel="noopener">buy me a coffee &#9749;</a>.
+      </p>
+      <p class="build" id="build"></p>
+    </main>
+    <script type="module" src="src/ui/options.js"></script>
+  </body>
+</html>

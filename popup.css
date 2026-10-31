@@ -1,0 +1,656 @@
+:root {
+  color-scheme: dark light;
+
+  --bg: #15171c;
+  --raised: #1c1f26;
+  --hover: #232730;
+  --line: #2a2f39;
+  --row-line: #1f232b;
+  --fg: #e6e8ec;
+  --dim: #9aa1ae;
+  --faint: #8b93a1;
+
+  --os: #f0b429;
+  --ip: #3fbfd6;
+  --dr: #c084fc;
+  --fc: #f472b6;
+  --live: #4ade80;
+  --warn: #fb7185;
+
+  --os-bg: #382c11;
+  --ip-bg: #14313a;
+  --dr-bg: #2e2242;
+  --fc-bg: #3a1f2d;
+
+  --chip-bg: #191c23;
+  --chip-hover-line: #454d5d;
+  --live-bg: #16301f;
+  --live-line: #2c5f42;
+  --attention: #d0904f;
+
+  --btn: #262b34;
+  --btn-hover: #2f3542;
+  --open-hot-bg: #33608f;
+  --open-hot-line: #4a7fb5;
+  --open-hot-fg: #ffffff;
+  /* The pressed filter button: a solid accent fill, so it never looks like hover. */
+  --seg-on-bg: #33608f;
+  --seg-on-fg: #ffffff;
+
+  --input-focus-bg: #20242c;
+  --input-focus-line: #3a4150;
+  --bad-bg: #241a1e;
+  --bad-line: #4a2b33;
+  --scroll: #2c313b;
+  --scroll-hover: #3b4250;
+
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Cascadia Mono", Menlo, monospace;
+  --ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+}
+
+/* Follows the browser/OS setting. Type colours are darkened for contrast on
+   white — the dark-mode hues are too pale to read as text on a light field. */
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #ffffff;
+    --raised: #f6f8fa;
+    --hover: #f0f3f6;
+    --line: #d8dee4;
+    --row-line: #e8ecf0;
+    --fg: #1f2328;
+    --dim: #57606a;
+    --faint: #636c76;
+
+    --os: #8a5c00;
+    --ip: #0f6d80;
+    --dr: #7d3fc4;
+    --fc: #a83a6d;
+    --live: #1a7f37;
+    --warn: #cf222e;
+
+    --os-bg: #fff4d6;
+    --ip-bg: #ddf3f8;
+    --dr-bg: #f1e7fd;
+    --fc-bg: #fde8f1;
+
+    --chip-bg: #ffffff;
+    --chip-hover-line: #a8b1bb;
+    --live-bg: #dafbe1;
+    --live-line: #9ae0ad;
+    --attention: #875a00;
+
+    --btn: #f6f8fa;
+    --btn-hover: #eaeef2;
+    --open-hot-bg: #0969da;
+    --open-hot-line: #0969da;
+    --open-hot-fg: #ffffff;
+    --seg-on-bg: #0969da;
+    --seg-on-fg: #ffffff;
+
+    --input-focus-bg: #ffffff;
+    --input-focus-line: #0969da;
+    --bad-bg: #fff5f5;
+    --bad-line: #f0c4c4;
+    --scroll: #ccd3da;
+    --scroll-hover: #aeb7c0;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: 460px;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--ui);
+  font-size: 13px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ------------------------------------------------------------------- bar */
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.org {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--faint);
+  flex: none;
+}
+.dot.ok {
+  background: var(--live);
+}
+.dot.busy {
+  background: var(--os);
+}
+.dot.bad {
+  background: var(--warn);
+}
+
+.org-host {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bar-actions {
+  display: flex;
+  gap: 4px;
+  flex: none;
+}
+
+.icon-btn {
+  background: none;
+  border: 1px solid transparent;
+  color: var(--dim);
+  font: inherit;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.icon-btn:hover {
+  background: var(--hover);
+  color: var(--fg);
+}
+.icon-btn:focus-visible {
+  outline: 2px solid var(--ip);
+  outline-offset: 1px;
+}
+
+/* ---------------------------------------------------------------- search */
+
+.search {
+  position: relative;
+  padding: 10px 12px 8px;
+}
+
+#q {
+  width: 100%;
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  color: var(--fg);
+  font: inherit;
+  font-size: 13px;
+  padding: 8px 11px;
+}
+#q::placeholder {
+  color: var(--faint);
+}
+#q:focus {
+  outline: none;
+  border-color: var(--input-focus-line);
+  background: var(--input-focus-bg);
+}
+
+.count {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--faint);
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------- filters */
+
+/* Two rows: the type filters, then the active toggle and result count. Full
+   asset names don't fit beside the toggle on a 460px popup. */
+.filters {
+  display: flex;
+  flex-direction: column;
+  padding: 0 12px 9px;
+  gap: 7px;
+}
+
+.filters-tail {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.segments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 2px;
+}
+
+.seg {
+  background: none;
+  border: 0;
+  color: var(--dim);
+  font: inherit;
+  font-size: 10.5px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.seg:hover {
+  color: var(--fg);
+}
+.seg.on {
+  background: var(--seg-on-bg);
+  color: var(--seg-on-fg);
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--dim);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.check input {
+  accent-color: var(--live);
+  margin: 0;
+}
+
+/* --------------------------------------------------------------- notice */
+
+.notice {
+  margin: 0 12px 9px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--raised);
+  color: var(--dim);
+  font-size: 11.5px;
+  line-height: 1.5;
+}
+.notice strong {
+  color: var(--fg);
+  font-weight: 600;
+}
+.notice.bad {
+  border-color: var(--bad-line);
+  background: var(--bad-bg);
+}
+.nowrap {
+  white-space: nowrap;
+}
+
+.notice a,
+.notice button.link {
+  color: var(--ip);
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* -------------------------------------------------------------- results */
+
+.results {
+  max-height: 420px;
+  overflow-y: auto;
+  border-top: 1px solid var(--line);
+}
+.results:focus {
+  outline: none;
+}
+
+.row {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 9px 12px 10px;
+  border-bottom: 1px solid var(--row-line);
+  cursor: pointer;
+  background: none;
+  border-left: 2px solid transparent;
+}
+.row:hover {
+  background: var(--hover);
+}
+/* The row selects; only the version chips navigate. */
+.row {
+  cursor: default;
+}
+.row.sel {
+  background: var(--hover);
+  border-left-color: var(--ip);
+}
+
+.row-top {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+}
+
+/* The listbox option: badge and name. */
+.row-id {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  flex: 1;
+  min-width: 0;
+}
+
+.badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  padding: 2px 5px;
+  border-radius: 3px;
+  flex: none;
+  text-transform: uppercase;
+}
+.badge.os {
+  color: var(--os);
+  background: var(--os-bg);
+}
+.badge.ip {
+  color: var(--ip);
+  background: var(--ip-bg);
+}
+.badge.dr {
+  color: var(--dr);
+  background: var(--dr-bg);
+}
+.badge.fc {
+  color: var(--fc);
+  background: var(--fc-bg);
+}
+
+.title {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+.title mark {
+  background: none;
+  color: var(--os);
+}
+
+.open-btn {
+  flex: none;
+  background: var(--btn);
+  border: 1px solid var(--line);
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 3px 7px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.open-btn:hover {
+  background: var(--open-hot-bg);
+  border-color: var(--open-hot-line);
+  color: var(--open-hot-fg);
+}
+.row.sel .open-btn {
+  border-color: var(--input-focus-line);
+  color: var(--fg);
+}
+.open-btn:focus-visible {
+  outline: 2px solid var(--ip);
+  outline-offset: 1px;
+}
+
+.meta {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--dim);
+  margin: 3px 0 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.meta .sep {
+  color: var(--faint);
+}
+
+/* The version rail: one chip per version, filled chip is the active one. */
+.rail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 7px;
+  align-items: center;
+}
+
+.chip {
+  font-family: var(--mono);
+  font-size: 10px;
+  line-height: 1;
+  padding: 4px 7px;
+  border-radius: 3px;
+  border: 1px solid var(--line);
+  background: var(--chip-bg);
+  color: var(--dim);
+  cursor: pointer;
+}
+.chip:hover {
+  border-color: var(--chip-hover-line);
+  color: var(--fg);
+}
+.chip.live {
+  border-color: var(--live-line);
+  background: var(--live-bg);
+  color: var(--live);
+  font-weight: 600;
+}
+.chip.live::after {
+  content: " ●";
+  font-size: 7px;
+  vertical-align: 2px;
+}
+.chip:focus-visible {
+  outline: 2px solid var(--ip);
+  outline-offset: 1px;
+}
+
+.chip.more {
+  border-style: dashed;
+  color: var(--faint);
+}
+.chip.more:hover {
+  color: var(--fg);
+  border-style: solid;
+}
+
+.rail-gap {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--faint);
+  padding: 0 1px;
+  user-select: none;
+}
+
+.rail-note {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--faint);
+  margin-left: 3px;
+}
+.rail-note.none {
+  color: var(--attention);
+}
+
+.empty {
+  padding: 30px 20px;
+  text-align: center;
+  color: var(--dim);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.empty strong {
+  display: block;
+  color: var(--fg);
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+/* ------------------------------------------------------------------ foot */
+
+.foot {
+  display: flex;
+  gap: 12px;
+  padding: 7px 12px;
+  border-top: 1px solid var(--line);
+  font-size: 10px;
+  color: var(--faint);
+}
+
+kbd {
+  font-family: var(--mono);
+  font-size: 9px;
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  border-radius: 3px;
+  padding: 1px 3px;
+  margin-right: 2px;
+  color: var(--dim);
+}
+
+::-webkit-scrollbar {
+  width: 9px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scroll);
+  border-radius: 5px;
+  border: 2px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scroll-hover);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .row,
+  .chip,
+  .icon-btn {
+    transition: background-color 90ms ease, border-color 90ms ease, color 90ms ease;
+  }
+}
+
+/* ------------------------------------------------------------------ help */
+
+.help {
+  padding: 12px 14px 18px;
+  border-top: 1px solid var(--line);
+  max-height: 420px;
+  overflow-y: auto;
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--dim);
+}
+
+.help h3 {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--fg);
+  margin: 16px 0 5px;
+  letter-spacing: 0.02em;
+}
+.help h3:first-child {
+  margin-top: 0;
+}
+
+.help p {
+  margin: 0 0 8px;
+}
+.help strong {
+  color: var(--fg);
+  font-weight: 600;
+}
+.help em {
+  color: var(--fg);
+  font-style: normal;
+}
+
+.help .keys {
+  color: var(--faint);
+}
+
+.legend {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 10px;
+  margin: 6px 0 10px;
+  align-items: center;
+}
+.legend dt {
+  justify-self: start;
+}
+.legend dd {
+  margin: 0;
+}
+/* Legend swatches are illustrations, not controls. */
+.legend .chip {
+  cursor: default;
+  pointer-events: none;
+}
+
+.icon-btn.on {
+  background: var(--btn-hover);
+  color: var(--fg);
+}
+
+.shortcut {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 1px 5px;
+  color: var(--fg);
+}
+.shortcut.unset {
+  color: var(--warn);
+  border-color: var(--bad-line);
+}
+
+.link-btn {
+  background: var(--btn);
+  border: 1px solid var(--line);
+  color: var(--fg);
+  font: inherit;
+  font-size: 11px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.link-btn:hover {
+  background: var(--btn-hover);
+}
+.link-btn:focus-visible {
+  outline: 2px solid var(--ip);
+  outline-offset: 1px;
+}

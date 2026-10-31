@@ -1,0 +1,227 @@
+:root {
+  color-scheme: dark light;
+
+  --bg: #15171c;
+  --raised: #1c1f26;
+  --line: #2a2f39;
+  --fg: #e6e8ec;
+  --dim: #9aa1ae;
+  --faint: #8b93a1;
+  --ip: #3fbfd6;
+  --live: #4ade80;
+  --warn: #fb7185;
+
+  --input-bg: #14171d;
+  --input-focus-line: #3d4452;
+  --btn: #262b34;
+  --btn-hover: #2f3542;
+  --primary-bg: #1d4a3a;
+  --primary-line: #2c6a4f;
+  --primary-hover: #235a45;
+  --primary-fg: #a7f3c9;
+
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Cascadia Mono", Menlo, monospace;
+  --ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #ffffff;
+    --raised: #f6f8fa;
+    --line: #d8dee4;
+    --fg: #1f2328;
+    --dim: #57606a;
+    --faint: #636c76;
+    --ip: #0969da;
+    --live: #1a7f37;
+    --warn: #cf222e;
+
+    --input-bg: #ffffff;
+    --input-focus-line: #0969da;
+    --btn: #f6f8fa;
+    --btn-hover: #eaeef2;
+    --primary-bg: #1f883d;
+    --primary-line: #1a7f37;
+    --primary-hover: #1a7f37;
+    --primary-fg: #ffffff;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--ui);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px 24px 64px;
+}
+
+h1 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 24px;
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+
+.card {
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.lede {
+  color: var(--dim);
+  font-size: 12.5px;
+  margin: 0 0 18px;
+}
+.lede em { color: var(--fg); font-style: normal; font-weight: 600; }
+
+.field { margin-bottom: 14px; }
+
+label {
+  display: block;
+  font-size: 11px;
+  color: var(--dim);
+  margin-bottom: 5px;
+  letter-spacing: 0.02em;
+}
+
+/* Wraps so a select showing its longest option never squeezes beside the next box. */
+.input-row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+input[type="text"] {
+  flex: 1 1 12em;
+  min-width: 0;
+  background: var(--input-bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--fg);
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 8px 10px;
+}
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--input-focus-line);
+}
+input::placeholder { color: var(--faint); font-family: var(--ui); }
+
+button {
+  background: var(--btn);
+  border: 1px solid var(--line);
+  color: var(--fg);
+  font: inherit;
+  font-size: 12px;
+  padding: 7px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+button:hover { background: var(--btn-hover); }
+button:focus-visible { outline: 2px solid var(--ip); outline-offset: 1px; }
+
+button.primary {
+  background: var(--primary-bg);
+  border-color: var(--primary-line);
+  color: var(--primary-fg);
+}
+button.primary:hover { background: var(--primary-hover); }
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.saved { font-size: 12px; color: var(--live); }
+
+.hint {
+  font-size: 11.5px;
+  color: var(--dim);
+  margin: 4px 0 0;
+}
+code {
+  font-family: var(--mono);
+  font-size: 11px;
+  background: var(--input-bg);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 1px 4px;
+  color: var(--ip);
+}
+
+.cache-list {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--dim);
+}
+.cache-list div { padding: 3px 0; }
+
+.hint code { word-break: break-all; }
+#noIdNote { margin-top: 14px; line-height: 1.7; }
+
+select {
+  background: var(--input-bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--fg);
+  font: inherit;
+  font-size: 12px;
+  padding: 8px 10px;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+}
+select:focus { outline: none; border-color: var(--input-focus-line); }
+#detected { margin-top: 8px; }
+
+/* Template boxes sit on their own line now that Capture/Test are gone. */
+.field > input[type="text"] {
+  width: 100%;
+}
+
+
+/* A quiet thank-you line, kept below the settings so it never competes with them. */
+.support {
+  margin-top: 28px;
+  font-size: 12px;
+  color: var(--dim);
+  text-align: center;
+}
+.support a { color: var(--ip); }
+
+.build {
+  margin-top: 6px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--faint);
+  text-align: center;
+}
+
+
+.hint kbd {
+  font-family: var(--mono);
+  font-size: 10px;
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  border-radius: 3px;
+  padding: 1px 4px;
+  color: var(--fg);
+}

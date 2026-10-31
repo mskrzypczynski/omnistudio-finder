@@ -1,0 +1,21 @@
+{
+  "version": "0.5.0",
+  "commit": "08d2025",
+  "files": {
+    "core/designer-routes.js": "83983e936e9faa529e004049b60558805ae66b8a64b27bec3b3a8cda90f334d3",
+    "core/element-type-table.js": "93ee4a738a0b2080db970cd4281dbda0ae49362a28122cfa645b8212d12a88ca",
+    "core/element-types.js": "e8c0706d0ac5e558c87e5198c0c432bdb368e0834f3fe176c20c76c095e33474",
+    "core/json-diff.js": "2d5d38996fb8b3a8a8d8b3cd2755c3bd445c136649beba9b9fffdeded82353b2",
+    "core/json-paths.js": "76d38ccc50a3f0420f19da6f3e568c0504a54cf0894c20d69a97bb15f87abf0e",
+    "core/json-shape.js": "c32aebc82e3b9db9343e1ea4aa465b7ba2e566b26d8c24cee765fcab366d9b10",
+    "core/json-summary.js": "c24d8f1bae5e0f266662e7cd52166d441f6a924930e85510a77968050b8a73ac",
+    "core/json-table.js": "9e5e63e00f45db48033ba7fd52bcc01893fd57fa7027775cf0d0bddb55e18253",
+    "core/json-tree-model.js": "2a4db4b1a33e28d23dd415bac9c20f6938e3dfec28b520e371604419cb5c9fe9",
+    "core/mask.js": "760da85d9464a0876b8691ee4c39f31462979973daab8930c7b0ff147c02f66b",
+    "core/org-hosts.js": "32ee51b0648e6c0c293a838dfbdf040e00ff0399afa21760d5177e5793583864",
+    "core/payload-errors.js": "0645c2f1884b702c2aa80a38d6839343d4bf26731de7cd821b4b4a8e936ad09a",
+    "core/raw-json.js": "54627d224a36d2553c62cd784a2f3f00fb66297eabbe952fd55a891d6c62932a",
+    "core/text-search.js": "82744a71c12e9169ab5364b4e271e9e71c2541f54e17b4460f37bf29b1c929fd",
+    "ui/devtools-page.js": "0aac191e3a8192b46d8136691ac6dc8a9eccd16054be8e108689c21bff781dfd"
+  }
+}

@@ -1,0 +1,43 @@
+🔍 Find any OmniStudio asset. Open the right version.
+
+A toolbar popup that lists every OmniScript, Integration Procedure, DataRaptor / Data Mapper and FlexCard in the Salesforce org you are on, with every version, and opens the one you pick in the correct designer.
+
+Opening an OmniScript usually means a list view, a filter, and working out which of the eleven versions is the live one. OmniStudio Finder makes it one keystroke and one click, from whatever Salesforce tab you are already on.
+
+An independent, unofficial developer tool. Not affiliated with, endorsed by, or sponsored by Salesforce, Inc.
+
+FIND IT
+
+⌨️ Alt+O (Cmd+Shift+O on macOS) opens the popup; start typing straight away.
+🔎 Filter on name, type, subtype, language or author. Every word has to match, in any order, so "case create" finds "Create Case".
+🔑 Paste an OmniScript or Integration Procedure key, Type_SubType_Language or Type_SubType, as it appears in logs and element names, and that script comes first. The run-together LWC spelling (caseCreateEnglish) works too.
+🗂️ Narrow to OmniScripts, Integration Procedures, DataRaptors or FlexCards, or tick Active only.
+🌗 Follows your light or dark theme, and works from the keyboard: arrow keys to move, Enter to open.
+🔄 Always live: every open queries the org afresh, so a version you just activated shows as active straight away.
+
+OPEN THE RIGHT ONE
+
+✅ One chip per version, with the active one marked, so you stop opening three of them to find the live one.
+🚪 Open the active version with one click or Enter, or click any chip to open exactly that version.
+⇧ Shift-click for the plain record page; Ctrl/Cmd-click to flip your new-tab / same-tab setting just once.
+🧭 Optionally pin a Lightning app, so record pages open with its navigation bar.
+
+BOTH FLAVOURS OF OMNISTUDIO
+
+🏗️ Designer links are built in for core (Lightning-native) OmniStudio and for the Vlocity managed packages, across namespaces. Nothing to configure.
+🔍 Where an org keeps its records and which designer it opens are detected separately, and the popup tells you which designer it is about to use. Settings let you force either, or override any designer link.
+🔁 Managed-package Integration Procedure and DataRaptor designers open on the first click, even on the first visit of a browser session.
+
+PRIVACY
+
+🔒 No server, no analytics, no telemetry. The only network requests go to your own Salesforce org.
+
+To query your org as you, the extension reads the Salesforce session cookie for the org in your current tab (cookies permission) and uses it only for API calls to that same org. It is never stored or sent anywhere else. Settings are kept in Chrome's sync storage, a note of what the last org looked like (object and app names, no records) in local storage, and a short-lived navigation hand-off in session storage. Asset lists are not cached.
+
+SUPPORT
+
+☕ Free, and staying that way. If it saves you an afternoon you can buy me a coffee: https://buycoffee.to/mskrz — entirely optional, and nothing in the extension is gated behind it.
+
+YOUR RESPONSIBILITY
+
+The popup lists the names of the assets in whatever org you are signed in to, and those names can be commercially sensitive. Take the same care with it as with any Salesforce window before screen-sharing or taking screenshots, and follow your organisation's policies.
