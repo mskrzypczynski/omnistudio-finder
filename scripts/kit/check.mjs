@@ -64,10 +64,10 @@ function main() {
     process.exit(1);
   }
   if (result.ok) {
-    console.log(`${kitDir} matches omnistudio-kit ${result.version} (${result.commit}).`);
+    console.log(`${kitDir} matches the shared kit ${result.version} (${result.commit}).`);
     return;
   }
-  console.error(`${kitDir} differs from omnistudio-kit ${result.version}. Change the kit and sync again instead of editing the copy.`);
+  console.error(`${kitDir} differs from the shared kit ${result.version}. Change the kit and sync again instead of editing the copy.`);
   for (const [kind, files] of Object.entries(result.diff)) files.forEach((file) => console.error(`  ${kind}: ${file}`));
   process.exit(1);
 }

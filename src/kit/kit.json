@@ -1,9 +1,9 @@
 {
-  "version": "0.5.0",
-  "commit": "08d2025",
+  "version": "0.5.1",
+  "commit": "887ff83",
   "files": {
     "core/designer-routes.js": "83983e936e9faa529e004049b60558805ae66b8a64b27bec3b3a8cda90f334d3",
-    "core/element-type-table.js": "93ee4a738a0b2080db970cd4281dbda0ae49362a28122cfa645b8212d12a88ca",
+    "core/element-type-table.js": "e0493e65a7702e478211f73fe41364ea6afadd7e9c377dceb2944492f2c4d658",
     "core/element-types.js": "e8c0706d0ac5e558c87e5198c0c432bdb368e0834f3fe176c20c76c095e33474",
     "core/json-diff.js": "2d5d38996fb8b3a8a8d8b3cd2755c3bd445c136649beba9b9fffdeded82353b2",
     "core/json-paths.js": "76d38ccc50a3f0420f19da6f3e568c0504a54cf0894c20d69a97bb15f87abf0e",
