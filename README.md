@@ -96,8 +96,7 @@ describe what the tool works with.
 
 Copyright (c) 2026 Mikołaj Skrzypczyński.
 
-From version 1.3.0 the extension is licensed under the
+The extension is licensed under the
 [GNU General Public License v3.0](LICENSE) (GPL-3.0-only): you may use it
 freely, and if you redistribute it, modified or not, you must keep this
 copyright notice and make your full source available under the same licence.
-Versions up to 1.2.0 were released under the MIT licence and remain so.
